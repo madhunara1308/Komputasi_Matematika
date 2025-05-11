@@ -1,0 +1,46 @@
+function integral = Tugas4_662022016_Rieman(f, a, b, n, metode)
+% RIEMANN Menghitung pendekatan integral numerik memakai kaidah Riemann
+%
+% Input:
+%   f      = fungsi integrand (handle fungsi)
+%   a      = batas integrasi bawah
+%   b      = batas integrasi atas
+%   n      = banyaknya subinterval (bilangan bulat positif)
+%   metode = tipe aproksimasi Riemann ('kiri', 'kanan', 'tengah')
+%
+% Output:
+%   integral = nilai pendekatan integral
+
+% Pengecekan parameter masukan
+if n <= 0 || mod(n,1) ~= 0
+    error('Parameter n harus bilangan bulat positif');
+end
+if ~any(strcmp(metode, {'kiri', 'kanan', 'tengah'}))
+    error('Pilihan metode harus ''kiri'', ''kanan'', atau ''tengah''');
+end
+
+h = (b - a)/n;  % Lebar tiap subinterval
+x = linspace(a, b, n+1);  % Pembagian titik partisi
+
+% Pemilihan titik sampel berdasarkan metode
+switch metode
+    case 'kiri'
+        % Menggunakan titik ujung kiri subinterval
+        titik_sampel = x(1:n);
+    case 'kanan'
+        % Menggunakan titik ujung kanan subinterval
+        titik_sampel = x(2:n+1);
+    case 'tengah'
+        % Menggunakan titik tengah subinterval
+        titik_sampel = (x(1:n) + x(2:n+1))/2;
+end
+
+% Perhitungan nilai fungsi di titik sampel
+nilai_f = f(titik_sampel);
+
+% Komputasi integral Riemann
+integral = h * sum(nilai_f);
+
+% Menampilkan output hasil
+disp(['Nilai integral dengan metode Riemann ', metode, ': ', num2str(integral)]);
+end
